@@ -49,7 +49,7 @@ Puppet::Type.newtype(:firewall) do
         * Supported features: address_type, clusterip, connection_limiting, conntrack, dnat, icmp_match,
         interface_match, iprange, ipsec_dir, ipsec_policy, ipset, iptables, isfragment, length,
         log_level, log_prefix, log_uid, log_tcp_sequence, log_tcp_options, log_ip_options,
-        mark, mask, mss, netmap, nflog_group, nflog_prefix,
+        mark, mask, mss, netmap, nflog_group, nflog_prefix, ecncwr
         nflog_range, nflog_threshold, owner, pkttype, queue_bypass, queue_num, rate_limiting,
         recent_limiting, reject_type, snat, socket, state_match, string_matching, tcp_flags, bpf.
 
@@ -199,6 +199,7 @@ Puppet::Type.newtype(:firewall) do
   feature :bpf, 'Berkeley Paket Filter feature'
   feature :ipvs, 'Packet belongs to an IP Virtual Server connection'
   feature :ct_target, 'The ability to set connection tracking parameters for a packet or its associated connection'
+  feature :ecncwr, 'Congestion control'
   feature :random_fully, 'The ability to use --random-fully flag'
   # provider specific features
   feature :iptables, 'The provider provides iptables features.'
@@ -854,6 +855,14 @@ Puppet::Type.newtype(:firewall) do
     desc <<-PUPPETCODE
       When combined with jump => "LOG" logging of the TCP IP/IPv6
       packet header.
+    PUPPETCODE
+
+    newvalues(:true, :false)
+  end
+
+  newproperty(:ecncwr, required_features: :ecncwr) do
+    desc <<-PUPPETCODE
+      Congestion control
     PUPPETCODE
 
     newvalues(:true, :false)

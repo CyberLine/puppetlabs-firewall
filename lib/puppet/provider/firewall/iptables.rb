@@ -51,6 +51,7 @@ Puppet::Type.type(:firewall).provide :iptables, parent: Puppet::Provider::Firewa
   has_feature :queue_bypass
   has_feature :ipvs
   has_feature :ct_target
+  has_feature :ecncwr
 
   optional_commands(iptables: 'iptables',
                     iptables_save: 'iptables-save')
@@ -107,6 +108,7 @@ Puppet::Type.type(:firewall).provide :iptables, parent: Puppet::Provider::Firewa
     dport: ['-m multiport --dports', '--dport'],
     dst_range: '--dst-range',
     dst_type: '--dst-type',
+    ecncwr: '-m ecn --ecn-tcp-cwr',
     gateway: '--gateway',
     gid: '--gid-owner',
     icmp: '-m icmp --icmp-type',
@@ -225,6 +227,7 @@ Puppet::Type.type(:firewall).provide :iptables, parent: Puppet::Provider::Firewa
   @known_booleans = [
     :checksum_fill,
     :clamp_mss_to_pmtu,
+    :ecncwr,
     :isfragment,
     :log_uid,
     :log_tcp_sequence,
@@ -358,7 +361,7 @@ Puppet::Type.type(:firewall).provide :iptables, parent: Puppet::Provider::Firewa
     :clusterip_clustermac, :clusterip_total_nodes, :clusterip_local_node, :clusterip_hash_init, :queue_num, :queue_bypass,
     :nflog_group, :nflog_prefix, :nflog_range, :nflog_size, :nflog_threshold, :clamp_mss_to_pmtu, :gateway,
     :set_mss, :set_dscp, :set_dscp_class, :todest, :tosource, :toports, :to, :checksum_fill, :random_fully, :random, :log_prefix,
-    :log_level, :log_uid, :log_tcp_sequence, :log_tcp_options, :log_ip_options, :reject, :set_mark, :match_mark, :mss, :connlimit_above, :connlimit_mask, :connmark, :time_start, :time_stop,
+    :log_level, :log_uid, :log_tcp_sequence, :log_tcp_options, :log_ip_options, :reject, :set_mark, :match_mark, :mss, :connlimit_above, :connlimit_mask, :connmark, :ecncwr, :time_start, :time_stop,
     :month_days, :week_days, :date_start, :date_stop, :time_contiguous, :kernel_timezone,
     :src_cc, :dst_cc, :hashlimit_upto, :hashlimit_above, :hashlimit_name, :hashlimit_burst,
     :hashlimit_mode, :hashlimit_srcmask, :hashlimit_dstmask, :hashlimit_htable_size,
